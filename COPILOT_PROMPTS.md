@@ -18,3 +18,42 @@ int main() {
 відкрити pull request для злиття цієї гілки в іншу (наприклад, develop або main);
 додати файл CMakeLists.txt або інструкцію для збірки;
 або внести інші зміни — скажіть, що саме потрібно.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+*Етап2
+у корені репозиторію https://github.com/TanyaZekter/csad2526ki409tetianazekter6/tree/feature/develop/cmake-setup створи файл  з назвою 
+CMakeLists.txt та згенеруй наповнення файлу 
+Copilot said: Чекаю на ваше підтвердження, щоб продовжити і
+Чекаю на ваше підтвердження, щоб продовжити і створити файл CMakeLists.txt у корені гілки feature/develop/cmake-setup.
+
+Are you sure?
+Are you sure you wish to execute the "create_or_update_file" tool?
+
+ TanyaZekter accepted the action
+Copilot said: ```name=CMakeLists.txt url=https://github.com/TanyaZekter/csad2526ki409tetianazekter6/blob/feature/develop/cmake-setup/CMakeLists.txt cmake_minimum_required(VERSION 3.10) project(csad2526ki409tetianazekter6 VERSION 1.0 LANGUAGES CXX) #
+name=CMakeLists.txt
+cmake_minimum_required(VERSION 3.10)
+
+project(csad2526ki409tetianazekter6 VERSION 1.0 LANGUAGES CXX)
+
+# Встановити стандарт C++
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Рекомендується збирати поза джерельним деревом
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+  message(WARNING "It is recommended to build out-of-source.")
+endif()
+
+# Додаємо виконуваний файл, якщо main.cpp присутній у корені
+add_executable(${PROJECT_NAME} main.cpp)
+
+# Інсталяція
+include(GNUInstallDirs)
+install(TARGETS ${PROJECT_NAME}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+# Опції
+option(BUILD_TESTS "Enable building tests" OFF)

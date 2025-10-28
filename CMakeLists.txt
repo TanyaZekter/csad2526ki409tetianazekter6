@@ -8,6 +8,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Library
 add_library(math_operations STATIC math_operations.cpp)
 target_include_directories(math_operations PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+# Executable hello
+add_executable(hello main.cpp)
+target_link_libraries(hello PRIVATE math_operations)
+target_include_directories(hello PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Option to enable/disable tests
 option(BUILD_TESTS "Build unit tests" ON)

@@ -1,23 +1,40 @@
 @echo off
-REM Step 1: Create build directory if not exist
-if not exist build mkdir build
+setlocal enabledelayedexpansion
 
-REM Step 2: Change to build directory
-cd build
+REM Створити каталог білдування
+if not exist build (
+    mkdir build
+)
+cd /d build || (echo Failed to enter build directory & exit /b 1)
 
-REM Step 3: Configure the project with CMake
+REM Конфігурування проекту за допомогою CMake
 cmake ..
+if errorlevel 1 (
+    echo CMake configuration failed.
+    exit /b 1
+)
 
-REM Step 4: Build the project
+REM Білдування проєкту
 cmake --build .
+if errorlevel 1 (
+    echo Build failed.
+    exit /b 1
+)
 
-REM Step 5: Run all tests with CTest
+REM Запустити тести за допомогою CTest
 ctest --output-on-failure
+if errorlevel 1 (
+    echo Some tests failed.
+    exit /b 1
+)
 
-REM Step 6: Ensure hello.exe is generated (optional check)
+REM Перевірити, що створено виконуваний файл hello.exe
 if exist hello.exe (
     echo Executable 'hello.exe' generated successfully.
 ) else (
     echo Executable 'hello.exe' not found!
     exit /b 1
 )
+
+echo CI script completed successfully.
+exit /b 0

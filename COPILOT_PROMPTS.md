@@ -195,3 +195,100 @@ TEST(AdditionTests, LargeNumbers) {
 }
 
 // main() provided by gtest_main when linked in CMake
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+Етап 4
+https://github.com/TanyaZekter/csad2526ki409tetianazekter6/tree/feature/develop/4-local-ci4. Генерація CI-скрипту для локального білдування 
+1. Створіть скрипт: Створіть файл ci.sh (для Linux/macOS) або ci.bat/ci.cmd 
+(для Windows). Використовуйте Copilot для генерації команд, які виконують 
+наступні кроки: 
+○ Створення каталогу білдування (mkdir build). 
+○ Перехід у каталог (cd build). 
+○ Конфігурування проекту за допомогою CMake (cmake ..). 
+○ Білдування проєкту (cmake --build .). 
+○ Забезпечте права на виконання (chmod +x build.sh) та зафіксуйте 
+зміни. 
+○ Створіть крок, який запускає тести за допомогою CTest (частина CMake), 
+і переконайтеся, що він виконується на всіх трьох ОС: 
+2. Тестування: Запустити скрипт локально, щоб переконатися, що білд проходить 
+успішно, і генерується виконуваний файл hello. Скрипт має запускатися без 
+параметрів.
+Ось згенеровані скрипти для двох ОС, що відповідають вашому завданню:
+ci.cmd
+@echo off
+setlocal enabledelayedexpansion
+
+REM Створити каталог білдування
+if not exist build (
+    mkdir build
+)
+cd /d build || (echo Failed to enter build directory & exit /b 1)
+
+REM Конфігурування проекту за допомогою CMake
+cmake ..
+if errorlevel 1 (
+    echo CMake configuration failed.
+    exit /b 1
+)
+
+REM Білдування проєкту
+cmake --build .
+if errorlevel 1 (
+    echo Build failed.
+    exit /b 1
+)
+
+REM Запустити тести за допомогою CTest
+ctest --output-on-failure
+if errorlevel 1 (
+    echo Some tests failed.
+    exit /b 1
+)
+
+REM Перевірити, що створено виконуваний файл hello.exe
+if exist Debug\hello.exe (
+    echo Executable 'hello.exe' generated successfully.
+) else (
+    echo Executable 'hello.exe' not found!
+    exit /b 1
+)
+
+echo CI script completed successfully.
+exit /b 0
+
+
+
+
+ci.sh
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+echo "CI build script — run from repository root"
+
+# Create build directory if missing and enter it
+mkdir -p build
+cd build || { echo "Failed to enter build directory" >&2; exit 1; }
+
+# Configure the project using CMake
+echo "Configuring with CMake..."
+cmake .. || { echo "CMake configuration failed." >&2; exit 1; }
+
+# Build the project
+echo "Building..."
+cmake --build . || { echo "Build failed." >&2; exit 1; }
+
+# Ensure execution rights for build.sh if present (repo root or build directory)
+if [ -f ../build.sh ]; then
+  chmod +x ../build.sh && echo "Made ../build.sh executable"
+fi
+if [ -f ./build.sh ]; then
+  chmod +x ./build.sh && echo "Made build.sh executable"
+fi
+
+# Run tests via CTest (show failures)
+echo "Running tests..."
+ctest --output-on-failure || { echo "Some tests failed." >&2; exit 1; }
+
+echo "CI script completed successfully."
+exit 0

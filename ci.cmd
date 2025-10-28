@@ -29,7 +29,7 @@ if errorlevel 1 (
 )
 
 REM Перевірити, що створено виконуваний файл hello.exe
-if exist hello.exe (
+if exist Debug\hello.exe (
     echo Executable 'hello.exe' generated successfully.
 ) else (
     echo Executable 'hello.exe' not found!

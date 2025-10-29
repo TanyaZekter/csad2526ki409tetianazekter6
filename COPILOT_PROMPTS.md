@@ -313,6 +313,7 @@ exit 0
 3). 
 ■ Deploy.
 
+
 Ось приклад YML-файлу для GitHub Actions згідно твоїх вимог.
 name: CI Workflow
 
@@ -347,4 +348,5 @@ jobs:
 
       - name: Deploy
         run: echo "Deploy step placeholder. Add your deploy script here."
+        
         

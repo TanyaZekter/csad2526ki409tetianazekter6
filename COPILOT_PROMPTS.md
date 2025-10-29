@@ -292,3 +292,61 @@ ctest --output-on-failure || { echo "Some tests failed." >&2; exit 1; }
 
 echo "CI script completed successfully."
 exit 0
+-----------------------------------------------------------------------------------------------------------------------------------
+*Етап 5
+1. https://github.com/TanyaZekter/csad2526ki409tetianazekter6/tree/feature/develop/5-yml-file потрібно створити каталог
+.github/workflows/ та файл, наприклад, ci.yml. 
+2. Використання Copilot для YML: У файлі ci.yml використовуйте Copilot для 
+генерації робочого процесу (workflow) з наступними вимогами: 
+○ Trigger: Запускати акцію при push або pull request у гілку, що містить в 
+назві  develop чи master . 
+○ Job: Створити одну Job (наприклад, cross_build). 
+○ Strategy: Використати матрицю (strategy: matrix) для запуску білду 
+на трьох ОС: 
+■ runs-on: ubuntu-latest (Linux) 
+■ runs-on: windows-latest (Windows) 
+■ runs-on: macos-latest (macOS) 
+○ Steps: Кожен білд повинен включати кроки: 
+■ Checkout коду (actions/checkout@v4). 
+■ Встановлення CMake (якщо потрібно). 
+■ Запуск команд конфігурації та білдування (запуск скрипту з Етапу 
+3). 
+■ Deploy.
+
+
+Ось приклад YML-файлу для GitHub Actions згідно твоїх вимог.
+name: CI Workflow
+
+on:
+  push:
+    branches: [develop, master]
+  pull_request:
+    branches: [develop, master]
+
+jobs:
+  cross_build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Configure project
+        run: cmake -S . -B build
+
+      - name: Build project
+        run: cmake --build build
+
+      - name: Run tests
+        run: ctest --output-on-failure --test-dir build
+
+      - name: Deploy
+        run: echo "Deploy step placeholder. Add your deploy script here."
+        
+        

@@ -8,6 +8,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Library
 add_library(math_operations STATIC math_operations.cpp)
 target_include_directories(math_operations PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+# Executable hello
+add_executable(hello main.cpp)
+target_link_libraries(hello PRIVATE math_operations)
+target_include_directories(hello PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Option to enable/disable tests
 option(BUILD_TESTS "Build unit tests" ON)
@@ -15,10 +19,10 @@ option(BUILD_TESTS "Build unit tests" ON)
 if(BUILD_TESTS)
     include(FetchContent)
 
-    # Fetch GoogleTest (release 1.15.0)
+     # Fetch GoogleTest (release 1.14.0)
     FetchContent_Declare(
         googletest
-        URL https://github.com/google/googletest/archive/refs/tags/release-1.15.0.zip
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
     )
     # For Windows: Prevent overriding the parent project's compiler/linker settings
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
